@@ -19,10 +19,14 @@ directly. Mode 1 is provided by the small `ruby_asr` package in this repo.
 Both variants live in one HF repo,
 [`hshispeech/Ruby-ASR-1.7B`](https://huggingface.co/hshispeech/Ruby-ASR-1.7B):
 
-| subfolder | style |
-|---|---|
-| `subtitle/` | subtitle-style transcription |
-| `verbatim/` | verbatim-style transcription |
+| model | subfolder | style |
+|---|---|---|
+| **Ruby-ASR-sub** | `subtitle/` | subtitle-style transcription |
+| **Ruby-ASR-ver** | `verbatim/` | verbatim-style transcription |
+
+Use `subtitle` when prioritizing concise, readable orthographic transcription;
+use `verbatim` when prioritizing script-aware and lexical-reading accuracy
+(see [Results](#results)).
 
 They are independent fine-tunes of the same base with the same architecture
 and mora vocab, one layout:
@@ -120,6 +124,37 @@ audio_tower (frozen arch, fine-tuned) ──► seq2seq decoder ──► 漢字
 The seq2seq path never sees the adapter — ruby decoding is bit-identical to a
 checkpoint without the branch, which is why stripping the CTC tensors yields a
 stock-vLLM-servable model.
+
+## Results
+
+Character-count-weighted averages (W.Avg.) over five Japanese benchmarks —
+B5K, CSJ, JSUT-Book, Common Voice 8, and TEDx — weighted by the number of
+reference characters per test set. All values are percentages; lower is
+better.
+
+| Model           |  Raw CER |   SA-CER | Kana CER |
+| --------------- | -------: | -------: | -------: |
+| ReazonSpeech-k2 |    10.35 |     8.51 |     5.64 |
+| Qwen3-ASR-1.7B  |    10.78 |     8.59 |     5.74 |
+| Kana-Whisper    |      N/A |      N/A |     4.66 |
+| Ruby-ASR-ver    |     9.10 | **6.59** | **3.75** |
+| Ruby-ASR-sub    | **8.51** |     6.64 |     4.01 |
+
+On this weighted aggregate, **Ruby-ASR-sub** achieves the best Raw CER
+(8.51%, a 21.1% relative reduction over Qwen3-ASR), and **Ruby-ASR-ver** the
+best SA-CER (6.59%) and Kana CER (3.75%) — relative reductions of 23.3% and
+34.7% over Qwen3-ASR. Compared with Kana-Whisper, Ruby-ASR-ver reduces
+weighted Kana CER from 4.66% to 3.75%, a 19.5% relative reduction.
+
+Metrics:
+
+- **Raw CER** — normalized orthographic transcription, with the original
+  script preserved.
+- **SA-CER** — script-aware: kana regions are scored by reading, kanji
+  regions by orthography.
+- **Kana CER** — lexical-reading transcription.
+- Ruby-ASR and Kana-Whisper are scored on their direct reading outputs; the
+  orthographic baselines are converted through the shared G2P pipeline.
 
 ## Building the HF upload (maintainers)
 
