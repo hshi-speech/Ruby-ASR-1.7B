@@ -22,6 +22,8 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("audio", nargs="+", help="audio file(s) (wav/flac/mp3/m4a/...)")
     ap.add_argument("--model", required=True, help="HF repo id or local model dir")
+    ap.add_argument("--subfolder", default=None,
+                    help='model subfolder inside the repo, e.g. "subtitle" or "verbatim"')
     ap.add_argument("--mora-vocab", default=None,
                     help="mora vocab JSON (only for raw training checkpoints)")
     ap.add_argument("--device", default=None, help='e.g. "cuda:0"; default: auto')
@@ -29,7 +31,8 @@ def main():
     args = ap.parse_args()
 
     rec = MoraCTCRecognizer.from_pretrained(
-        args.model, device=args.device, mora_vocab=args.mora_vocab)
+        args.model, device=args.device, mora_vocab=args.mora_vocab,
+        subfolder=args.subfolder)
     for path, mora in zip(args.audio,
                           rec.transcribe(args.audio, batch_size=args.batch_size)):
         print(f"{path}\t{mora}")

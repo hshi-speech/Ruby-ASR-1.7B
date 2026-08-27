@@ -16,24 +16,27 @@ directly. Mode 1 is provided by the small `ruby_asr` package in this repo.
 
 ## Checkpoints
 
-<!-- EDIT before release: replace HF_NAMESPACE with your HF user/org name. -->
+Both variants live in one HF repo,
+[`hshispeech/Ruby-ASR-1.7B`](https://huggingface.co/hshispeech/Ruby-ASR-1.7B):
 
-| checkpoint | style |
+| subfolder | style |
 |---|---|
-| [`HF_NAMESPACE/Ruby-ASR-sub`](https://huggingface.co/HF_NAMESPACE/Ruby-ASR-sub) | subtitle-style transcription |
-| [`HF_NAMESPACE/Ruby-ASR-ver`](https://huggingface.co/HF_NAMESPACE/Ruby-ASR-ver) | verbatim-style transcription |
+| `subtitle/` | subtitle-style transcription |
+| `verbatim/` | verbatim-style transcription |
 
-Both are independent fine-tunes of the same base with the same architecture and
-mora vocab, and both ship the same repo layout:
+They are independent fine-tunes of the same base with the same architecture
+and mora vocab, one layout:
 
 ```
-model repo (HuggingFace)                 code repo (this repo)
-├── model.safetensors   ← Mode 2 ─── vllm serve / qwen-asr (no code here needed)
-├── config.json, tokenizer*
-└── ctc/
-    ├── model.safetensors ← Mode 1 ─── ruby_asr.MoraCTCRecognizer
-    ├── config.json
-    └── mora_vocab.json
+hshispeech/Ruby-ASR-1.7B (HuggingFace)
+├── subtitle/                                    ← and verbatim/, same layout
+│   ├── model-0000x-of-00003.safetensors + index ← Mode 2 ── vllm / qwen-asr
+│   ├── config.json, tokenizer*                     (no code from this repo needed)
+│   └── ctc/                                     ← Mode 1 ── ruby_asr.MoraCTCRecognizer
+│       ├── model.safetensors
+│       ├── config.json
+│       └── mora_vocab.json
+└── verbatim/
 ```
 
 ## Install
@@ -53,12 +56,13 @@ virtualenv — see the notes in that file).
 ```python
 from ruby_asr import MoraCTCRecognizer
 
-rec = MoraCTCRecognizer.from_pretrained("HF_NAMESPACE/Ruby-ASR-sub")  # or -ver, or a local dir
+rec = MoraCTCRecognizer.from_pretrained("hshispeech/Ruby-ASR-1.7B",
+                                        subfolder="subtitle")   # or "verbatim"
 print(rec.transcribe("audio.wav")[0])
 # ナナネンカンデロスニモトモダチデキタシ
 ```
 
-CLI: `python examples/transcribe_ctc_mora.py audio.wav --model HF_NAMESPACE/Ruby-ASR-sub`
+CLI: `python examples/transcribe_ctc_mora.py audio.wav --model hshispeech/Ruby-ASR-1.7B --subfolder subtitle`
 
 The output alphabet is katakana morae (small-kana clusters like `キョ` are one
 token; `ッ`, `ン`, `ー` stand alone) plus `a`–`z` for embedded English. Long
@@ -70,17 +74,18 @@ It also loads a *raw* joint-CTC training checkpoint (CTC tensors still inside
 
 ## Mode 2 — ruby transcription (stock Qwen3-ASR path)
 
-Serve with vLLM (nothing custom):
+Download the variant you need, then serve with vLLM (nothing custom):
 
 ```bash
-vllm serve HF_NAMESPACE/Ruby-ASR-sub --served-model-name ruby-asr --max-model-len 8192
+hf download hshispeech/Ruby-ASR-1.7B --include "subtitle/*" --local-dir Ruby-ASR-1.7B
+vllm serve Ruby-ASR-1.7B/subtitle --served-model-name ruby-asr --max-model-len 8192
 python examples/transcribe_vllm.py audio.wav        # OpenAI-client example
 ```
 
 Or with transformers via the official toolkit:
 
 ```bash
-python examples/transcribe_transformers.py audio.wav --model HF_NAMESPACE/Ruby-ASR-sub
+python examples/transcribe_transformers.py audio.wav --model Ruby-ASR-1.7B/subtitle
 ```
 
 > **Always query vLLM through `/v1/chat/completions`** (empty system message +
@@ -118,16 +123,16 @@ stock-vLLM-servable model.
 
 ## Building the HF upload (maintainers)
 
-From a raw trainer checkpoint (never modified), one export per released model:
+From a raw trainer checkpoint (never modified), one export per variant:
 
 ```bash
-python scripts/prepare_hf_checkpoint.py <sub-checkpoint-dir> Ruby-ASR-sub \
-    --mora-vocab <mora_vocab.json> --model-card model_card/Ruby-ASR-sub.md
-python scripts/prepare_hf_checkpoint.py <ver-checkpoint-dir> Ruby-ASR-ver \
-    --mora-vocab <mora_vocab.json> --model-card model_card/Ruby-ASR-ver.md
-# check the README.md in each export dir, then:
-hf upload HF_NAMESPACE/Ruby-ASR-sub Ruby-ASR-sub .
-hf upload HF_NAMESPACE/Ruby-ASR-ver Ruby-ASR-ver .
+python scripts/prepare_hf_checkpoint.py <subtitle-checkpoint-dir> <staging>/subtitle \
+    --mora-vocab <mora_vocab.json>
+python scripts/prepare_hf_checkpoint.py <verbatim-checkpoint-dir> <staging>/verbatim \
+    --mora-vocab <mora_vocab.json>
+# shard each variant's model.safetensors (2GB shards + index), put the model
+# card as <staging>/README.md and LICENSE next to it, then:
+hf upload hshispeech/Ruby-ASR-1.7B <staging> .
 ```
 
 The script strips the CTC tensors out of `model.safetensors`, writes them to

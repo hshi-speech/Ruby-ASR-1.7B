@@ -63,11 +63,18 @@ class CTCBranch(nn.Module):
         return self.ctc_head(self.ctc_adapter(frames))
 
 
-def _resolve_model_dir(model_path):
-    """Local dir passed through; otherwise treat as an HF repo id and download."""
+def _resolve_model_dir(model_path, subfolder=None):
+    """Local dir passed through; otherwise treat as an HF repo id and download.
+
+    With `subfolder` (e.g. "subtitle"), only that subfolder of the repo is
+    downloaded and the resolved path points inside it.
+    """
     if os.path.isdir(model_path):
-        return model_path
+        return os.path.join(model_path, subfolder) if subfolder else model_path
     from huggingface_hub import snapshot_download
+    if subfolder:
+        root = snapshot_download(model_path, allow_patterns=[f"{subfolder}/*"])
+        return os.path.join(root, subfolder)
     return snapshot_download(model_path)
 
 
@@ -132,7 +139,8 @@ class MoraCTCRecognizer:
         self.ctc_tokenizer = ctc_tokenizer
 
     @classmethod
-    def from_pretrained(cls, model_path, device=None, dtype=None, mora_vocab=None):
+    def from_pretrained(cls, model_path, device=None, dtype=None, mora_vocab=None,
+                        subfolder=None):
         """Load from an HF repo id or local dir.
 
         Args:
@@ -142,10 +150,12 @@ class MoraCTCRecognizer:
             dtype: defaults to bf16 on Ampere+, else fp16 on cuda, fp32 on cpu.
             mora_vocab: vocab JSON path or {mora: id} dict. Only needed for raw
                 training checkpoints; the released repo ships ctc/mora_vocab.json.
+            subfolder: model subfolder inside the repo/dir, e.g. "subtitle" or
+                "verbatim" for the released Ruby-ASR-1.7B layout.
         """
         from qwen_asr import Qwen3ASRModel
 
-        model_dir = _resolve_model_dir(str(model_path))
+        model_dir = _resolve_model_dir(str(model_path), subfolder)
         device = torch.device(device if device is not None
                               else ("cuda" if torch.cuda.is_available() else "cpu"))
         if dtype is None:

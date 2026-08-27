@@ -63,8 +63,8 @@ def main():
     ap.add_argument("--adapter-dropout", type=float, default=0.0)
     ap.add_argument("--blank-id", type=int, default=0)
     ap.add_argument("--model-card", default="",
-        help="model card to copy in as README.md, e.g. "
-             "model_card/Ruby-ASR-sub.md ('' to skip)")
+        help="model card to copy in as README.md ('' to skip; the released "
+             "Ruby-ASR-1.7B repo keeps one card at the repo root instead)")
     args = ap.parse_args()
 
     src, dst = os.path.abspath(args.src), os.path.abspath(args.dst)
