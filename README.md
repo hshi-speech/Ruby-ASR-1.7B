@@ -163,7 +163,7 @@ pure-text and need no GPU, model download, or training data.
   title        = {Ruby-ASR: Japanese ASR with inline furigana and a CTC mora-reading head},
   author       = {AUTHOR_LIST},
   year         = {2026},
-  howpublished = {\url{https://github.com/hshi-speech/Ruby-ASR}}
+  howpublished = {\url{https://github.com/hshi-speech/Ruby-ASR-1.7B}}
 }
 ```
 

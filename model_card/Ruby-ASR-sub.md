@@ -98,7 +98,7 @@ print(model.transcribe(audio="audio.wav")[0].text)
 ```
 
 Post-process the bracket output (surface / reading / HTML `<ruby>`) with the
-`ruby_asr` helpers from the code repo (https://github.com/hshi-speech/Ruby-ASR):
+`ruby_asr` helpers from the code repo (https://github.com/hshi-speech/Ruby-ASR-1.7B):
 
 ```python
 from ruby_asr import to_surface, to_reading, to_html, brackets_to_parens
@@ -115,7 +115,7 @@ Fast, and reflects the *actual pronunciation* (e.g. numbers and kanji resolved
 to what was said).
 
 ```python
-# pip install git+https://github.com/hshi-speech/Ruby-ASR.git
+# pip install git+https://github.com/hshi-speech/Ruby-ASR-1.7B.git
 from ruby_asr import MoraCTCRecognizer
 
 rec = MoraCTCRecognizer.from_pretrained("HF_NAMESPACE/Ruby-ASR-sub")  # reads ctc/ subfolder
@@ -166,7 +166,7 @@ the branch.
   title        = {Ruby-ASR: Japanese ASR with inline furigana and a CTC mora-reading head},
   author       = {AUTHOR_LIST},
   year         = {2026},
-  howpublished = {\url{https://github.com/hshi-speech/Ruby-ASR}}
+  howpublished = {\url{https://github.com/hshi-speech/Ruby-ASR-1.7B}}
 }
 ```
 
