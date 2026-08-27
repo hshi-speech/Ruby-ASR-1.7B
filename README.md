@@ -6,7 +6,7 @@ with **two complementary outputs** from one model:
 | mode | path | output | example |
 |---|---|---|---|
 | **1. Mora reading** | audio encoder → CTC adapter → CTC head (greedy) | actual-pronunciation kana morae, no LLM decoding | `ナナネンカンデロスニモトモダチデキタシ` |
-| **2. Ruby transcription** | standard Qwen3-ASR seq2seq decode | transcript with inline bracket furigana | `七年間[ななねんかん]でロスにも友達[ともだち]できたし、` |
+| **2. Ruby transcription** | standard Qwen3-ASR seq2seq decode | transcript with inline bracket furigana | `七[なな]年間[ねんかん]でロスにも友達[ともだち]できたし、` |
 
 The released checkpoints keep the main `model.safetensors` **byte-compatible
 with stock Qwen3-ASR** (the auxiliary CTC branch lives in a `ctc/` subfolder of
@@ -163,7 +163,7 @@ pure-text and need no GPU, model download, or training data.
   title        = {Ruby-ASR: Japanese ASR with inline furigana and a CTC mora-reading head},
   author       = {AUTHOR_LIST},
   year         = {2026},
-  howpublished = {\url{GITHUB_REPO}}
+  howpublished = {\url{https://github.com/hshi-speech/Ruby-ASR}}
 }
 ```
 

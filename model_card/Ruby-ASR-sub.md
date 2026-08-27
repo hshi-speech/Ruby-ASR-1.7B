@@ -16,8 +16,7 @@ tags:
 
 # Ruby-ASR-sub: subtitle-style Japanese ASR with inline furigana + a CTC mora-reading head
 
-<!-- EDIT before uploading: replace HF_NAMESPACE with your HF user/org name
-     and GITHUB_REPO with the code repo URL. -->
+<!-- EDIT before uploading: replace HF_NAMESPACE with your HF user/org name. -->
 
 Ruby-ASR-sub is a fine-tune of [Qwen/Qwen3-ASR-1.7B](https://huggingface.co/Qwen/Qwen3-ASR-1.7B)
 for **subtitle-style** Japanese transcription. A sibling checkpoint,
@@ -99,7 +98,7 @@ print(model.transcribe(audio="audio.wav")[0].text)
 ```
 
 Post-process the bracket output (surface / reading / HTML `<ruby>`) with the
-`ruby_asr` helpers from the code repo (GITHUB_REPO):
+`ruby_asr` helpers from the code repo (https://github.com/hshi-speech/Ruby-ASR):
 
 ```python
 from ruby_asr import to_surface, to_reading, to_html, brackets_to_parens
@@ -116,7 +115,7 @@ Fast, and reflects the *actual pronunciation* (e.g. numbers and kanji resolved
 to what was said).
 
 ```python
-# pip install git+GITHUB_REPO
+# pip install git+https://github.com/hshi-speech/Ruby-ASR.git
 from ruby_asr import MoraCTCRecognizer
 
 rec = MoraCTCRecognizer.from_pretrained("HF_NAMESPACE/Ruby-ASR-sub")  # reads ctc/ subfolder
@@ -167,7 +166,7 @@ the branch.
   title        = {Ruby-ASR: Japanese ASR with inline furigana and a CTC mora-reading head},
   author       = {AUTHOR_LIST},
   year         = {2026},
-  howpublished = {\url{GITHUB_REPO}}
+  howpublished = {\url{https://github.com/hshi-speech/Ruby-ASR}}
 }
 ```
 

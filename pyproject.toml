@@ -17,6 +17,9 @@ dependencies = [
     "huggingface_hub",
 ]
 
+[project.urls]
+Repository = "https://github.com/hshi-speech/Ruby-ASR"
+
 [project.optional-dependencies]
 # Mode 2 (seq2seq ruby decoding) via the official Qwen3-ASR toolkit
 qwen = ["qwen-asr"]
