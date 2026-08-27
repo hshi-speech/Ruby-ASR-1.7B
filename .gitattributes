@@ -1,0 +1,13 @@
+# Normalise line endings to LF for text files
+* text=auto eol=lf
+
+# Binary files
+*.wav binary
+*.mp3 binary
+*.flac binary
+*.png binary
+*.jpg binary
+*.safetensors binary
+*.bin binary
+*.pt binary
+*.pth binary

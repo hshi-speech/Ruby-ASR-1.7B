@@ -1,0 +1,34 @@
+# Exact package versions this release was verified with (2026-07-30).
+# Python 3.12.13, NVIDIA GPUs with bf16 (SM >= 8.0).
+#
+# requirements.txt keeps loose ranges for day-to-day installs; use THIS file
+# when you want to reproduce the verified environment exactly:
+#
+#     pip install -r requirements-verified.txt
+#
+# NOTE: transformers is pinned by qwen-asr 0.0.6 (it requires exactly 4.57.6);
+# torch was verified as the cu130 build (2.9.1+cu130) — install the CUDA
+# variant matching your driver from https://pytorch.org.
+
+# --- Mode 1 (encoder + CTC mora reading) and Mode 2 via transformers --------
+torch==2.9.1
+transformers==4.57.6
+qwen-asr==0.0.6
+safetensors==0.7.0
+librosa==0.11.0
+soundfile==0.13.1
+numpy==2.4.4
+huggingface-hub==0.36.2
+accelerate==1.12.0
+
+# --- Mode 2 served through vLLM ---------------------------------------------
+# vLLM brings its own torch (verified: torch 2.10.0+cu129) — install it in a
+# SEPARATE virtualenv, not on top of the stack above:
+#
+#     python -m venv venv-vllm && venv-vllm/bin/pip install vllm==0.19.0
+#
+# vllm==0.19.0            # loads Qwen3ASRForConditionalGeneration natively
+# transformers==4.57.6    # (pulled in by vllm; same pin)
+
+# client side for the vLLM OpenAI-compatible API (any env):
+openai==2.32.0

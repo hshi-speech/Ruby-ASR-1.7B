@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ruby-asr"
+version = "0.1.0"
+description = "Japanese ASR with inline furigana (ruby) output and an auxiliary encoder-CTC mora-reading head, built on Qwen3-ASR"
+readme = "README.md"
+license = { file = "LICENSE" }
+requires-python = ">=3.10"
+dependencies = [
+    "torch>=2.1",
+    "transformers>=4.51",
+    "safetensors",
+    "librosa",
+    "huggingface_hub",
+]
+
+[project.optional-dependencies]
+# Mode 2 (seq2seq ruby decoding) via the official Qwen3-ASR toolkit
+qwen = ["qwen-asr"]
+# Mode 2 served through vLLM's OpenAI-compatible API (client side)
+client = ["openai"]
+dev = ["pytest"]
+
+[tool.setuptools]
+packages = ["ruby_asr"]

@@ -1,0 +1,10 @@
+# Mode 1 (encoder + CTC mora reading) — minimal
+torch>=2.1
+transformers>=4.51
+safetensors
+librosa
+huggingface_hub
+
+# Mode 2 (full seq2seq ruby decoding, same as Qwen3-ASR)
+qwen-asr          # official toolkit; pip install qwen-asr[vllm] for offline vLLM
+openai            # only for the vLLM server client example

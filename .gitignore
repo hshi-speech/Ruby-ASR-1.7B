@@ -1,0 +1,22 @@
+# local Claude Code settings (contains machine-local paths) — never commit
+.claude/
+
+__pycache__/
+*.pyc
+*.egg-info/
+.pytest_cache/
+build/
+dist/
+venv*/
+.venv/
+
+# local release-prep audit notes — not part of the public repo
+RELEASE_AUDIT.md
+
+# local model exports (upload to HF, don't commit)
+hf_export/
+Ruby-ASR-sub/
+Ruby-ASR-ver/
+*.safetensors
+*.wav
+!assets/test.wav
