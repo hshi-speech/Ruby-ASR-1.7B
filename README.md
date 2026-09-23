@@ -196,12 +196,10 @@ pure-text and need no GPU, model download, or training data.
 
 ## Citation
 
-<!-- EDIT before release: fill in the author list. -->
-
 ```bibtex
-@misc{rubyasr2026,
-  title        = {Ruby-ASR: Japanese ASR with inline furigana and a CTC mora-reading head},
-  author       = {AUTHOR_LIST},
+@misc{shi2026rubyasr,
+  title        = {Ruby-ASR: Evidence-Preserving Supervision for Joint Orthographic and Lexical-Reading Recognition},
+  author       = {Hao Shi and Yun Liu and Xuehao Yang and Jun Liu and Chuanbo Hua and Xuanjun Chen and Lianbo Liu and Shiao Zhu and Zixiong Su},
   year         = {2026},
   howpublished = {\url{https://github.com/hshi-speech/Ruby-ASR-1.7B}}
 }
