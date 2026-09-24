@@ -1,5 +1,8 @@
 # Ruby-ASR
 
+📄 Paper: [arXiv:2609.27289](https://arxiv.org/abs/2609.27289) ·
+🤗 Models: [hshispeech/Ruby-ASR-1.7B](https://huggingface.co/hshispeech/Ruby-ASR-1.7B)
+
 Japanese ASR built on [Qwen3-ASR-1.7B](https://huggingface.co/Qwen/Qwen3-ASR-1.7B)
 with **two complementary outputs** from one model:
 
@@ -197,11 +200,14 @@ pure-text and need no GPU, model download, or training data.
 ## Citation
 
 ```bibtex
-@misc{shi2026rubyasr,
-  title        = {Ruby-ASR: Evidence-Preserving Supervision for Joint Orthographic and Lexical-Reading Recognition},
-  author       = {Hao Shi and Yun Liu and Xuehao Yang and Jun Liu and Chuanbo Hua and Xuanjun Chen and Lianbo Liu and Shiao Zhu and Zixiong Su},
-  year         = {2026},
-  howpublished = {\url{https://github.com/hshi-speech/Ruby-ASR-1.7B}}
+@misc{shi2026rubyasrevidencepreservingsupervisionjoint,
+  title         = {Ruby-ASR: Evidence-Preserving Supervision for Joint Orthographic and Lexical-Reading Recognition},
+  author        = {Hao Shi and Yun Liu and Xuehao Yang and Jun Liu and Chuanbo Hua and Xuanjun Chen and Lianbo Liu and Shiao Zhu and Zixiong Su},
+  year          = {2026},
+  eprint        = {2609.27289},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.CL},
+  url           = {https://arxiv.org/abs/2609.27289},
 }
 ```
 

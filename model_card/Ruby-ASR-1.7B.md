@@ -16,6 +16,9 @@ tags:
 
 # Ruby-ASR-1.7B: Japanese ASR with inline furigana + a CTC mora-reading head
 
+📄 Paper: [arXiv:2609.27289](https://arxiv.org/abs/2609.27289) ·
+💻 Code: [hshi-speech/Ruby-ASR-1.7B](https://github.com/hshi-speech/Ruby-ASR-1.7B)
+
 Ruby-ASR-1.7B is a pair of Japanese fine-tunes of
 [Qwen/Qwen3-ASR-1.7B](https://huggingface.co/Qwen/Qwen3-ASR-1.7B), shipped as
 two variants in this repo:
@@ -199,11 +202,14 @@ Metrics:
 ## Citation
 
 ```bibtex
-@misc{shi2026rubyasr,
-  title        = {Ruby-ASR: Evidence-Preserving Supervision for Joint Orthographic and Lexical-Reading Recognition},
-  author       = {Hao Shi and Yun Liu and Xuehao Yang and Jun Liu and Chuanbo Hua and Xuanjun Chen and Lianbo Liu and Shiao Zhu and Zixiong Su},
-  year         = {2026},
-  howpublished = {\url{https://github.com/hshi-speech/Ruby-ASR-1.7B}}
+@misc{shi2026rubyasrevidencepreservingsupervisionjoint,
+  title         = {Ruby-ASR: Evidence-Preserving Supervision for Joint Orthographic and Lexical-Reading Recognition},
+  author        = {Hao Shi and Yun Liu and Xuehao Yang and Jun Liu and Chuanbo Hua and Xuanjun Chen and Lianbo Liu and Shiao Zhu and Zixiong Su},
+  year          = {2026},
+  eprint        = {2609.27289},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.CL},
+  url           = {https://arxiv.org/abs/2609.27289},
 }
 ```
 
